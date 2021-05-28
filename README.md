@@ -1,16 +1,20 @@
 # REST API implementation
 
-This is a Game of Thrones inspired REST API game. You are responsible to create the engine of the game.
+This is a Game of Thrones inspired REST API game. You are responsible to create
+the engine of the game.
 
 ## Your tasks
 
-1. Implement the endpoints in **./src/api.js** file with the most suitable code for players and objects management REST API. You will find detailed instructions in this file.
+1. Implement the endpoints in **./src/api.js** file with the most suitable code
+   for players and objects management REST API. You will find detailed instructions
+   in this file.
 2. Write some tests for your code. Use test folder for this purpose.
 3. Answer all commented questions you find in the code.
 
 ### Required endpoints
 
-You have to create endpoints (as many as you consider) to support the following functionality:
+You have to create endpoints (as many as you consider) to support the following 
+functionality:
 
 1. List all players.
 2. Create player: adds a new player to data source.
