@@ -1,16 +1,16 @@
 import mongoose from 'mongoose'
-import autoIncrementSchema from '../middlewares/auto-increment'
+import autoIncrementSchema from '../middlewares/auto-increment.js'
 const { Schema, model } = mongoose
 
 // { id: 1, name: 'spoon', value: -1 },
 
 const ObjectSchema = Schema({
-    // _id: {
-    //     type: Number,
-    //     required: true,
-    // },
+    _id: {
+        type: Number,
+    },
     name: {
         type: String,
+        unique: true,
         required: true,
     },
     value: {

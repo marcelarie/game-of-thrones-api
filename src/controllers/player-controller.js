@@ -1,4 +1,5 @@
 import PlayerRepo from '../models/Player-model.js'
+import ObjectRepo from '../models/Object-model.js'
 
 // ENDPOINTS
 // PLAYER:
@@ -53,11 +54,50 @@ export async function getPlayerById(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
-    } catch (error) {
+    } catch ({message}) {
         res.status(500).send({ message })
     }
 }
 
+export async function addObjectToPlayerByParams(req, res) {
+    const { id, objectId } = req.params
+
+    try {
+        const objectResponse = await ObjectRepo.findById(objectId)
+        console.log(objectResponse)
+
+        if (!objectResponse) return res.status(404).send(objectResponse)
+
+        const response = await PlayerRepo.findByIdAndUpdate(id, {
+            $addToSet: { bag: objectResponse._id },
+        })
+
+        if (!response) return res.status(404).send(response)
+        if (response) return res.status(202).send(response)
+    } catch ({message}) {
+        res.status(500).send({ message })
+    }
+}
+
+export async function addObjectToPlayer(req, res) {
+    const { body } = req
+
+    const { _id, rest } = body
+    try {
+        const objectResponse = await ObjectRepo.findById(_id)
+
+        if (!objectResponse) return res.status(404).send(objectResponse)
+
+        const response = await PlayerRepo.findOneAndUpdate(rest, {
+            $addToSet: { bag: objectResponse._id },
+        })
+
+        if (!response) return res.status(404).send(response)
+        if (response) return res.status(202).send(response)
+    } catch ({message}) {
+        res.status(500).send({ message })
+    }
+}
 
 // export async function getPlayerById(req, res) {}
 //
