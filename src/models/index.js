@@ -1,7 +1,4 @@
-import ObjectModel from './Object-model.js'
-import PlayerModel from './Player-model.js'
+import ObjectModel from './Object-model'
+import PlayerModel from './Player-model'
 
-export {
-    ObjectModel,
-    PlayerModel
-}
+export { ObjectModel, PlayerModel }
