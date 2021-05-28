@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
+import autoIncrementSchema from '../middlewares/auto-increment.js'
 const { Schema, model } = mongoose
 
 // { id: 1, name: 'Jon Snow', age: 23, health: 100, bag: [1] },
 
 const PlayerSchema = Schema({
-    // _id: {
-    //     type: Number,
-    //     required: true,
-    // },
+    _id: {
+        type: Number,
+    },
     name: {
         type: String,
         required: true,
@@ -27,6 +27,8 @@ const PlayerSchema = Schema({
         },
     ],
 })
+
+autoIncrementSchema(PlayerSchema)
 
 const Player = model('player', PlayerSchema)
 export default Player

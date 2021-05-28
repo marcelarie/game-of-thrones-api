@@ -2,8 +2,8 @@ import PlayerRepo from '../models/Player-model.js'
 
 // ENDPOINTS
 // PLAYER:
-// 1. List all players.
-// 2. Create player: adds a new player to data source.
+// 1. List all players. ✅
+// 2. Create player: adds a new player to data source. ✅
 // 3. Get player by id: returns the player for the given id.
 // 4. Arm a player with an object in its bag.
 // 5. Kill a player: sets player health to 0.
@@ -28,8 +28,8 @@ export async function getAllPlayers(req, res) {
         if (response.error) return res.status(400).send(response.error)
         if (response.length <= 0) return res.status(204).send({ data: [] })
         if (response.data) return res.status(200).send(response.data)
-    } catch (error) {
-        res.status(500).send(error)
+    } catch ({ message }) {
+        res.status(500).send({ message })
     }
 }
 
@@ -41,8 +41,8 @@ export async function postPlayer(req, res) {
 
         if (!response) return res.status(400).send(response)
         if (response) return res.status(200).send(response)
-    } catch (error) {
-        console.log(error)
+    } catch ({ message }) {
+        res.status(500).send({ message })
     }
 }
 

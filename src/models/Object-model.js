@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoIncrementSchema from '../middlewares/auto-increment'
 const { Schema, model } = mongoose
 
 // { id: 1, name: 'spoon', value: -1 },
@@ -18,6 +19,7 @@ const ObjectSchema = Schema({
     },
 })
 
+autoIncrementSchema(ObjectSchema)
 
 const Object = model('object', ObjectSchema)
 export default Object
