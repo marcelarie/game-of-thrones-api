@@ -54,7 +54,7 @@ export async function getPlayerById(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
-    } catch ({message}) {
+    } catch ({ message }) {
         res.status(500).send({ message })
     }
 }
@@ -74,7 +74,7 @@ export async function addObjectToPlayerByParams(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
-    } catch ({message}) {
+    } catch ({ message }) {
         res.status(500).send({ message })
     }
 }
@@ -82,19 +82,20 @@ export async function addObjectToPlayerByParams(req, res) {
 export async function addObjectToPlayer(req, res) {
     const { body } = req
 
-    const { _id, rest } = body
+    const { _id, ...rest } = body
+
     try {
-        const objectResponse = await ObjectRepo.findById(_id)
+        const objectResponse = await ObjectRepo.findOne(rest)
 
         if (!objectResponse) return res.status(404).send(objectResponse)
 
-        const response = await PlayerRepo.findOneAndUpdate(rest, {
+        const response = await PlayerRepo.findByIdAndUpdate(_id, {
             $addToSet: { bag: objectResponse._id },
         })
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
-    } catch ({message}) {
+    } catch ({ message }) {
         res.status(500).send({ message })
     }
 }
