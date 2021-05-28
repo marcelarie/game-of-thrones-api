@@ -23,13 +23,12 @@ import PlayerRepo from '../models/Player-model.js'
 
 export async function getAllPlayers(req, res) {
     try {
-        const response = PlayerRepo.find({})
+        const response = await PlayerRepo.find({})
 
         if (response.error) return res.status(400).send(response.error)
         if (response.length <= 0) return res.status(204).send({ data: [] })
         if (response.data) return res.status(200).send(response.data)
     } catch (error) {
-        console.log(error)
         res.status(500).send(error)
     }
 }
@@ -38,7 +37,7 @@ export async function postPlayer(req, res) {
     const { body } = req
 
     try {
-        const response = await Player.create(body)
+        const response = await PlayerRepo.create(body)
 
         if (!response) return res.status(400).send(response)
         if (response) return res.status(200).send(response)
@@ -47,8 +46,8 @@ export async function postPlayer(req, res) {
     }
 }
 
-export async function getPlayerById(req, res) {}
-
-export async function addObjectToPlayer(req, res) {}
-
-export async function deletePlayer(req, res) {}
+// export async function getPlayerById(req, res) {}
+//
+// export async function addObjectToPlayer(req, res) {}
+//
+// export async function deletePlayer(req, res) {}
