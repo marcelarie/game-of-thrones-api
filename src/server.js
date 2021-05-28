@@ -4,8 +4,9 @@ import cors from 'cors'
 
 const app = express()
 
-app.use(morgan())
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
+// app.disable("x-powered-by"); // QUESTION: any reason is this line here?
 
 export default app
