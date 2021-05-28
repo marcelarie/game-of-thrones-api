@@ -9,5 +9,6 @@ ObjectRouter.put('/value-random/:id', ObjectMethods.updateObjectValueRandom)
 ObjectRouter.put('/value/:value/to/:id', ObjectMethods.updateObjectByGivenValue)
 ObjectRouter.put('/destroy/:id', ObjectMethods.destroyObject)
 ObjectRouter.put('/repair/:id', ObjectMethods.repairObject)
+ObjectRouter.delete('/:id', ObjectMethods.deleteObject)
 
 export default ObjectRouter

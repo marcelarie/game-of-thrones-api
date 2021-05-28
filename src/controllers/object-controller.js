@@ -119,4 +119,16 @@ export async function repairObject(req, res) {
 }
 
 export async function deleteObject(req, res) {
+    const { id } = req.params
+
+    try {
+        const response = await ObjectRepo.findByIdAndRemove(id)
+        if (!response) return res.status(404).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: 'The object was removed.' })
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
 }
