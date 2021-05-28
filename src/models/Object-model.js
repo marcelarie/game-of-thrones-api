@@ -16,6 +16,8 @@ const ObjectSchema = Schema({
     value: {
         type: Number,
         required: true,
+        max: 200,
+        min: -200,
     },
 })
 
