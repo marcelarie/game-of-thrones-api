@@ -61,13 +61,62 @@ export async function updateObjectByGivenValue(req, res) {
             return res.status(400).send({
                 message: 'Object values can only be between -200 and 200.',
             })
-        const response = await ObjectRepo.findByIdAndUpdate(id, {
-            value,
-        }, {new: true})
+        const response = await ObjectRepo.findByIdAndUpdate(
+            id,
+            {
+                value,
+            },
+            { new: true }
+        )
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }
+}
+
+export async function destroyObject(req, res) {
+    const { id } = req.params
+
+    try {
+        const response = await ObjectRepo.findByIdAndUpdate(
+            id,
+            {
+                available: false,
+            },
+            { new: true }
+        )
+        if (!response)
+            return res
+                .status(404)
+                .send({ response, message: 'The object was destroyed.' })
+        if (response) return res.status(202).send(response)
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+export async function repairObject(req, res) {
+    const { id } = req.params
+
+    try {
+        const response = await ObjectRepo.findByIdAndUpdate(
+            id,
+            {
+                available: true,
+            },
+            { new: true }
+        )
+        if (!response) return res.status(404).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: 'The object was repaired.' })
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+export async function deleteObject(req, res) {
 }

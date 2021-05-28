@@ -19,6 +19,10 @@ const ObjectSchema = Schema({
         max: 200,
         min: -200,
     },
+    available: {
+        type: Boolean,
+        default: true
+    }
 })
 
 autoIncrementSchema(ObjectSchema)
