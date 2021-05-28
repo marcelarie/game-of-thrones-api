@@ -11,5 +11,9 @@ PlayerRouter.put(
     '/add-object/:objectId/to/:id',
     PlayerMethods.addObjectToPlayerByParams
 )
+PlayerRouter.put(
+    '/kill-player/:id',
+    PlayerMethods.killPlayer
+)
 
 export default PlayerRouter
