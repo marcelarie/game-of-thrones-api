@@ -1,0 +1,436 @@
+{
+	"info": {
+		"_postman_id": "f2b0967a-b4a3-44b7-b041-0cdc5a0e2d6b",
+		"name": "Game of Thrones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List all players.",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGcisOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjI0ODc2OWRjZmUxZmZlYTVlMDFlZiIsImlhdCI6MTYyMjI5ODQ3MiwiZXhwIjoxNjIyMzg0ODcyfQ.tABNRBBYLfe1LQaHD5oUVTH8Z9xLe57LafBJ2DGpwpA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create player",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"The mountain\",\n    \"age\": 15\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/player",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get player by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create object",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Owner sword\",\n    \"value\": -20\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/object",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add object to player bag by params",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/add-object/4/to/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"add-object",
+						"4",
+						"to",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add object to player bag",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"_id\": 1,\n    \"name\": \"Sword\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/player/add-object",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"add-object"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Kill player",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/kill/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"kill",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resurrect Player",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/resurrect/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"resurrect",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get object by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update object value random",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/value-random/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"value-random",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update object value",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/value/-14/to/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"value",
+						"-14",
+						"to",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Destroy object",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/destroy/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"destroy",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Object",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pick up object without owner",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/pick-up-object/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"pick-up-object",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attack player",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"_id\": 1,\n    \"victim\": 1,\n    \"object\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/player/attack",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"attack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Steal bag from owner",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/player/resurrect/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"player",
+						"resurrect",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"marcel3\",\n    \"email\":\"marcel3@mail.com\",\n    \"password\":\"12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user/sign-up",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"marcel3\",\n    \"password\":\"12345\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/user/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
