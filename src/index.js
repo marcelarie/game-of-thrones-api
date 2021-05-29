@@ -15,9 +15,9 @@ mongoose.connect(
         useCreateIndex: true,
     },
     () => {
-        mongoose.set('returnOriginal', false)
         console.log('Connected to Database')
     }
 )
+        mongoose.set('returnOriginal', false)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT} :)`))

@@ -3,10 +3,6 @@ import PlayerRepo from '../models/Player-model.js'
 
 // ENDPOINTS
 // BONUS:
-// 4. Implement attack player endpoint: one player attacks another player using
-// an object from its bag. Adjust health accordingly
-// 5. Implement steal bag from player endpoint: one player steals everything
-// from another player. Bag objects are moved from one player to another.
 // 6. Implement resurrect player endpoint: bring back to life a dead player
 // using its id.
 // 7. Implement use object endpoint: a player use an object against another
@@ -69,13 +65,20 @@ export async function addObjectToPlayerByParams(req, res) {
                 message: 'This object already has an owner.',
             })
 
-        const response = await PlayerRepo.findByIdAndUpdate(id, {
-            $addToSet: { bag: objectResponse._id },
-        })
+        const response = await PlayerRepo.findByIdAndUpdate(
+            id,
+            {
+                $addToSet: { bag: objectResponse._id },
+            },
+            { new: true }
+        )
         // - Object Ownership ✅
-        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(_id, {
-            owner: response._id,
-        })
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
+            objectId,
+            {
+                owner: response._id,
+            }
+        )
         if (!ownerObjectResponse)
             return res.status(404).send(ownerObjectResponse)
 
@@ -102,9 +105,13 @@ export async function addObjectToPlayer(req, res) {
                 message: 'This object already has an owner.',
             })
 
-        const response = await PlayerRepo.findByIdAndUpdate(_id, {
-            $addToSet: { bag: objectResponse._id },
-        })
+        const response = await PlayerRepo.findByIdAndUpdate(
+            _id,
+            {
+                $addToSet: { bag: objectResponse._id },
+            },
+            { new: true }
+        )
         // - Object Ownership ✅
         const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(_id, {
             owner: response._id,
@@ -123,7 +130,11 @@ export async function addObjectToPlayer(req, res) {
 export async function killPlayer(req, res) {
     const { id } = req.params
     try {
-        const response = await PlayerRepo.findByIdAndUpdate(id, { health: 0 })
+        const response = await PlayerRepo.findByIdAndUpdate(
+            id,
+            { health: 0 },
+            { new: true }
+        )
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
@@ -143,9 +154,13 @@ export async function pickUpObjectWithoutOwener(req, res) {
                 response: objectResponse,
                 message: 'Now objects without owner right now.',
             })
-        const response = await PlayerRepo.findByIdAndUpdate(id, {
-            $addToSet: { bag: objectResponse._id },
-        })
+        const response = await PlayerRepo.findByIdAndUpdate(
+            id,
+            {
+                $addToSet: { bag: objectResponse._id },
+            },
+            { new: true }
+        )
         const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
             objectResponse._id,
             { owner: response._id }
@@ -164,23 +179,64 @@ export async function pickUpObjectWithoutOwener(req, res) {
 // an object from its bag. Adjust health accordingly
 export async function attackPlayer(req, res) {
     const { body } = req
-    console.log(body)
-
-    const foundAttacker = await PlayerRepo.findById(body._id)
-    if (!foundAttacker) return res.status(404).send(foundAttacker)
-
-    const objectResponse = await ObjectRepo.findById(body.object)
-    if (!objectResponse) return res.status(404).send(objectResponse)
-
-    const victimResponse = await PlayerRepo.findById(body.victim)
-    if (!victimResponse) return res.status(404).send(victimResponse)
-    const attackResponse = await PlayerRepo.findByIdAndUpdate(body.victim, {
-        health: victimResponse.health + objectResponse.value,
-    })
-    if (!attackResponse) return res.status(404).send(!attackResponse)
-    if (attackResponse) return res.status(200).send(attackResponse)
 
     try {
+        const foundAttacker = await PlayerRepo.findById(body._id)
+        if (!foundAttacker) return res.status(404).send(foundAttacker)
+
+        const objectResponse = await ObjectRepo.findById(body.object)
+        if (!objectResponse) return res.status(404).send(objectResponse)
+
+        const victimResponse = await PlayerRepo.findById(body.victim)
+        if (!victimResponse) return res.status(404).send(victimResponse)
+
+        const attackResponse = await PlayerRepo.findByIdAndUpdate(
+            body.victim,
+            {
+                health: victimResponse.health + objectResponse.value,
+            },
+            { new: true }
+        )
+
+        if (!attackResponse) return res.status(404).send(!attackResponse)
+        if (attackResponse) return res.status(200).send(attackResponse)
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+// 5. Implement steal bag from player endpoint: one player steals everything
+// from another player. Bag objects are moved from one player to another.
+export async function stealFromPlayer(req, res) {
+    const { id, victim } = req.params
+    try {
+        const foundVictim = await PlayerRepo.findById(victim)
+        if (!foundVictim) return res.status(404).send(foundVictim)
+        if (foundVictim.bag.length <= 0)
+            return res
+                .status(404)
+                .send({ message: 'The victim dosnt have items.' })
+
+        const foundThief = await PlayerRepo.findByIdAndUpdate(id, {
+            $push: { bag: { $each: foundVictim.bag } },
+        })
+        if (!foundThief) return res.status(404).send(!foundThief)
+
+        const stealResponse = await PlayerRepo.findByIdAndUpdate(victim, {
+            bag: [],
+        }).populate('bag')
+        if (!stealResponse) return res.status(404).send(!stealResponse)
+
+        const changeOwnership = await ObjectRepo.updateMany(
+            { _id: { $in: foundVictim.bag } },
+            { $set: { owner: foundThief._id } }
+        )
+        if (!changeOwnership) return res.status(404).send(!changeOwnership)
+
+        return res.status(200).send({
+            response: { stolenItems: stealResponse.bag },
+            message: `You stole the bag of ${stealResponse.name} `,
+        })
     } catch ({ message }) {
         res.status(500).send({ message })
     }

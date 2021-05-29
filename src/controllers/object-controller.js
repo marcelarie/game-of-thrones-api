@@ -46,6 +46,7 @@ export async function updateObjectValueRandom(req, res) {
             {
                 value: random,
             },
+            { new: true }
         )
 
         if (!response) return res.status(404).send(response)
@@ -67,6 +68,7 @@ export async function updateObjectByGivenValue(req, res) {
             {
                 value,
             },
+            { new: true }
         )
 
         if (!response) return res.status(404).send(response)
@@ -85,6 +87,7 @@ export async function destroyObject(req, res) {
             {
                 available: false,
             },
+            { new: true }
         )
         if (!response)
             return res
@@ -100,11 +103,10 @@ export async function repairObject(req, res) {
     const { id } = req.params
 
     try {
-        const response = await ObjectRepo.findByIdAndUpdate(
-            id,
-            {
-                available: true,
-            },
+        const response = await ObjectRepo.findByIdAndUpdate(id, {
+            available: true,
+        },
+            { new: true }
         )
         if (!response) return res.status(404).send(response)
         if (response)

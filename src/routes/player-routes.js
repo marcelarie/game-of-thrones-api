@@ -14,5 +14,6 @@ PlayerRouter.put(
 PlayerRouter.put('/kill/:id', PlayerMethods.killPlayer)
 PlayerRouter.put('/pick-up-object/:id', PlayerMethods.pickUpObjectWithoutOwener)
 PlayerRouter.patch('/attack', PlayerMethods.attackPlayer)
+PlayerRouter.put('/:id/steal/:victim', PlayerMethods.stealFromPlayer)
 
 export default PlayerRouter
