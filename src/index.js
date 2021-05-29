@@ -4,10 +4,12 @@ dotenv.config()
 
 import app from './server.js'
 
+const { NODE_ENV, DB_CONNECT } = process.env
+
 const PORT = process.env.PORT || 8080
 
 mongoose.connect(
-    process.env.DB_CONNECT,
+    DB_CONNECT,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -18,6 +20,8 @@ mongoose.connect(
         console.log('Connected to Database')
     }
 )
-        mongoose.set('returnOriginal', false)
+mongoose.set('returnOriginal', false)
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT} :)`))
+export { app }
+if (NODE_ENV !== 'test')
+    app.listen(PORT, () => console.log(`Server running on port ${PORT} :)`))

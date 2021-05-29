@@ -5,9 +5,9 @@
     "description": "Code challenge for fullstack vacancy at Payvision. REST API exercise.",
     "main": "src/index.js",
     "scripts": {
-        "start": "nodemon app.js",
-        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-        "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+        "start": "NODE_ENV=develop nodemon app.js",
+        "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
     },
     "jest": {
         "testEnvironment": "jest-environment-node",
