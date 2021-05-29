@@ -13,7 +13,7 @@ import PlayerRepo from '../models/Player-model.js'
 // player or itself.
 // 8. Are you having fun? You are free to extend the game with new
 // functionality.
-//EXTRA:
+// EXTRA:
 
 // 1. List all players. ✅
 export async function getAllPlayers(req, res) {
@@ -69,17 +69,13 @@ export async function addObjectToPlayerByParams(req, res) {
                 message: 'This object already has an owner.',
             })
 
-        const response = await PlayerRepo.findByIdAndUpdate(
-            id,
-            { $addToSet: { bag: objectResponse._id } },
-            { new: true }
-        )
+        const response = await PlayerRepo.findByIdAndUpdate(id, {
+            $addToSet: { bag: objectResponse._id },
+        })
         // - Object Ownership ✅
-        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
-            _id,
-            { owner: response._id },
-            { new: true }
-        )
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(_id, {
+            owner: response._id,
+        })
         if (!ownerObjectResponse)
             return res.status(404).send(ownerObjectResponse)
 
@@ -106,17 +102,13 @@ export async function addObjectToPlayer(req, res) {
                 message: 'This object already has an owner.',
             })
 
-        const response = await PlayerRepo.findByIdAndUpdate(
-            _id,
-            { $addToSet: { bag: objectResponse._id } },
-            { new: true }
-        )
+        const response = await PlayerRepo.findByIdAndUpdate(_id, {
+            $addToSet: { bag: objectResponse._id },
+        })
         // - Object Ownership ✅
-        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
-            _id,
-            { owner: response._id },
-            { new: true }
-        )
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(_id, {
+            owner: response._id,
+        })
         if (!ownerObjectResponse)
             return res.status(404).send(ownerObjectResponse)
 
@@ -131,11 +123,7 @@ export async function addObjectToPlayer(req, res) {
 export async function killPlayer(req, res) {
     const { id } = req.params
     try {
-        const response = await PlayerRepo.findByIdAndUpdate(
-            id,
-            { health: 0 },
-            { new: true }
-        )
+        const response = await PlayerRepo.findByIdAndUpdate(id, { health: 0 })
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
@@ -155,21 +143,44 @@ export async function pickUpObjectWithoutOwener(req, res) {
                 response: objectResponse,
                 message: 'Now objects without owner right now.',
             })
-        const response = await PlayerRepo.findByIdAndUpdate(
-            id,
-            { $addToSet: { bag: objectResponse._id } },
-            { new: true }
-        )
+        const response = await PlayerRepo.findByIdAndUpdate(id, {
+            $addToSet: { bag: objectResponse._id },
+        })
         const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
             objectResponse._id,
-            { owner: response._id },
-            { new: true }
+            { owner: response._id }
         )
         if (!ownerObjectResponse)
             return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+// 4. Implement attack player endpoint: one player attacks another player using
+// an object from its bag. Adjust health accordingly
+export async function attackPlayer(req, res) {
+    const { body } = req
+    console.log(body)
+
+    const foundAttacker = await PlayerRepo.findById(body._id)
+    if (!foundAttacker) return res.status(404).send(foundAttacker)
+
+    const objectResponse = await ObjectRepo.findById(body.object)
+    if (!objectResponse) return res.status(404).send(objectResponse)
+
+    const victimResponse = await PlayerRepo.findById(body.victim)
+    if (!victimResponse) return res.status(404).send(victimResponse)
+    const attackResponse = await PlayerRepo.findByIdAndUpdate(body.victim, {
+        health: victimResponse.health + objectResponse.value,
+    })
+    if (!attackResponse) return res.status(404).send(!attackResponse)
+    if (attackResponse) return res.status(200).send(attackResponse)
+
+    try {
     } catch ({ message }) {
         res.status(500).send({ message })
     }

@@ -11,7 +11,8 @@ PlayerRouter.put(
     '/add-object/:objectId/to/:id',
     PlayerMethods.addObjectToPlayerByParams
 )
-PlayerRouter.put('/kill-player/:id', PlayerMethods.killPlayer)
-PlayerRouter.patch('/pick-up-object/:id', PlayerMethods.pickUpObjectWithoutOwener)
+PlayerRouter.put('/kill/:id', PlayerMethods.killPlayer)
+PlayerRouter.put('/pick-up-object/:id', PlayerMethods.pickUpObjectWithoutOwener)
+PlayerRouter.patch('/attack', PlayerMethods.attackPlayer)
 
 export default PlayerRouter
