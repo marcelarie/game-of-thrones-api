@@ -19,6 +19,11 @@ const UserSchema = Schema({
         type: String,
         required: true,
     },
+    // maybe I can put here and array if we want the user to have multiple players
+    player: {
+        type: Number,
+        ref: 'player',
+    },
 })
 
 UserSchema.pre('save', async function () {
