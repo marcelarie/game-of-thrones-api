@@ -21,8 +21,13 @@ const ObjectSchema = Schema({
     },
     available: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
+    owner: {
+        type: Number,
+        ref: 'player',
+        default: null,
+    },
 })
 
 autoIncrementSchema(ObjectSchema)

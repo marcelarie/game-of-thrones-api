@@ -5,10 +5,12 @@ import ObjectRepo from '../models/Object-model.js'
 // 6. Create object: adds a new object to data source. ✅
 // 7. Get object by id: returns the object for the given id. ✅
 // 8. Upgrade object: increase/descrease the value of the object given by id
-// with a new value
-// 9. Destroy object: remove an object from available objects
+// with a new value ✅
+// 9. Destroy object: remove an object from available objects ✅
 // BONUS:
 // ...
+// 10. Repair object ✅
+// 11. Delete object completly ✅
 //
 export async function postObject(req, res) {
     const { body } = req

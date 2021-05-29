@@ -64,15 +64,26 @@ export async function addObjectToPlayerByParams(req, res) {
 
     try {
         const objectResponse = await ObjectRepo.findById(objectId)
-        console.log(objectResponse)
 
         if (!objectResponse) return res.status(404).send(objectResponse)
+        if (objectResponse.owner)
+            return res.status(409).send({
+                response: objectResponse,
+                message: 'This object already has an owner.',
+            })
 
         const response = await PlayerRepo.findByIdAndUpdate(
             id,
             { $addToSet: { bag: objectResponse._id } },
             { new: true }
         )
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
+            _id,
+            { owner: response._id },
+            { new: true }
+        )
+        if (!ownerObjectResponse)
+            return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
@@ -90,12 +101,24 @@ export async function addObjectToPlayer(req, res) {
         const objectResponse = await ObjectRepo.findOne(rest)
 
         if (!objectResponse) return res.status(404).send(objectResponse)
+        if (objectResponse.owner)
+            return res.status(409).send({
+                response: objectResponse,
+                message: 'This object already has an owner.',
+            })
 
         const response = await PlayerRepo.findByIdAndUpdate(
             _id,
             { $addToSet: { bag: objectResponse._id } },
             { new: true }
         )
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
+            _id,
+            { owner: response._id },
+            { new: true }
+        )
+        if (!ownerObjectResponse)
+            return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
@@ -115,6 +138,13 @@ export async function killPlayer(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response) return res.status(202).send(response)
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+export async function pickUpObjectWithoutOwener(req, res) {
+    try {
     } catch ({ message }) {
         res.status(500).send({ message })
     }
