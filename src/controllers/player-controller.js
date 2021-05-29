@@ -2,15 +2,7 @@ import ObjectRepo from '../models/Object-model.js'
 import PlayerRepo from '../models/Player-model.js'
 
 // ENDPOINTS
-// PLAYER:
-// 1. List all players. ✅
-// 2. Create player: adds a new player to data source. ✅
-// 3. Get player by id: returns the player for the given id. ✅
-// 4. Arm a player with an object in its bag. ✅
-// 5. Kill a player: sets player health to 0. ✅
 // BONUS:
-// 3. Implement pick up item endpoint: one player add to its bag one item that
-// doesn't belong to any other player.
 // 4. Implement attack player endpoint: one player attacks another player using
 // an object from its bag. Adjust health accordingly
 // 5. Implement steal bag from player endpoint: one player steals everything
@@ -21,7 +13,9 @@ import PlayerRepo from '../models/Player-model.js'
 // player or itself.
 // 8. Are you having fun? You are free to extend the game with new
 // functionality.
+//EXTRA:
 
+// 1. List all players. ✅
 export async function getAllPlayers(req, res) {
     try {
         const response = await PlayerRepo.find({})
@@ -34,6 +28,7 @@ export async function getAllPlayers(req, res) {
     }
 }
 
+// 2. Create player: adds a new player to data source. ✅
 export async function postPlayer(req, res) {
     const { body } = req
 
@@ -47,6 +42,7 @@ export async function postPlayer(req, res) {
     }
 }
 
+// 3. Get player by id: returns the player for the given id. ✅
 export async function getPlayerById(req, res) {
     const { id } = req.params
     try {
@@ -59,6 +55,7 @@ export async function getPlayerById(req, res) {
     }
 }
 
+// 4. Arm a player with an object in its bag. ✅
 export async function addObjectToPlayerByParams(req, res) {
     const { id, objectId } = req.params
 
@@ -77,6 +74,7 @@ export async function addObjectToPlayerByParams(req, res) {
             { $addToSet: { bag: objectResponse._id } },
             { new: true }
         )
+        // - Object Ownership ✅
         const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
             _id,
             { owner: response._id },
@@ -92,6 +90,7 @@ export async function addObjectToPlayerByParams(req, res) {
     }
 }
 
+// 4. Arm a player with an object in its bag. ✅
 export async function addObjectToPlayer(req, res) {
     const { body } = req
 
@@ -112,6 +111,7 @@ export async function addObjectToPlayer(req, res) {
             { $addToSet: { bag: objectResponse._id } },
             { new: true }
         )
+        // - Object Ownership ✅
         const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
             _id,
             { owner: response._id },
@@ -127,6 +127,7 @@ export async function addObjectToPlayer(req, res) {
     }
 }
 
+// 5. Kill a player: sets player health to 0. ✅
 export async function killPlayer(req, res) {
     const { id } = req.params
     try {
@@ -143,8 +144,32 @@ export async function killPlayer(req, res) {
     }
 }
 
+// 3. Implement pick up item endpoint: one player add to its bag one item that
+// doesn't belong to any other player.
 export async function pickUpObjectWithoutOwener(req, res) {
+    const { id } = req.params
     try {
+        const objectResponse = await ObjectRepo.findOne({ owner: null })
+        if (!objectResponse)
+            return res.status(404).send({
+                response: objectResponse,
+                message: 'Now objects without owner right now.',
+            })
+        const response = await PlayerRepo.findByIdAndUpdate(
+            id,
+            { $addToSet: { bag: objectResponse._id } },
+            { new: true }
+        )
+        const ownerObjectResponse = await ObjectRepo.findByIdAndUpdate(
+            objectResponse._id,
+            { owner: response._id },
+            { new: true }
+        )
+        if (!ownerObjectResponse)
+            return res.status(404).send(ownerObjectResponse)
+
+        if (!response) return res.status(404).send(response)
+        if (response) return res.status(202).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }
