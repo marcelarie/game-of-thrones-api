@@ -11,6 +11,7 @@
   "author": "Payvision",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "consola": "^2.10.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

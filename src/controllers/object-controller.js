@@ -50,7 +50,13 @@ export async function updateObjectValueRandom(req, res) {
         )
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({
+                    response,
+                    message: `Now ${response.name} has a value of ${response.value}`,
+                })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -72,7 +78,9 @@ export async function updateObjectByGivenValue(req, res) {
         )
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response) return res.status(202).send({ response, 
+                    message: `Now ${response.name} has a value of ${response.value}`,
+        })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -103,9 +111,11 @@ export async function repairObject(req, res) {
     const { id } = req.params
 
     try {
-        const response = await ObjectRepo.findByIdAndUpdate(id, {
-            available: true,
-        },
+        const response = await ObjectRepo.findByIdAndUpdate(
+            id,
+            {
+                available: true,
+            },
             { new: true }
         )
         if (!response) return res.status(404).send(response)
