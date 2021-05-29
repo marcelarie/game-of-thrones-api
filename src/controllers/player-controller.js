@@ -1,16 +1,6 @@
 import ObjectRepo from '../models/Object-model.js'
 import PlayerRepo from '../models/Player-model.js'
 
-// ENDPOINTS
-// BONUS:
-// 6. Implement resurrect player endpoint: bring back to life a dead player
-// using its id.
-// 7. Implement use object endpoint: a player use an object against another
-// player or itself.
-// 8. Are you having fun? You are free to extend the game with new
-// functionality.
-// EXTRA:
-
 // 1. List all players. ✅
 export async function getAllPlayers(req, res) {
     try {
@@ -32,7 +22,10 @@ export async function postPlayer(req, res) {
         const response = await PlayerRepo.create(body)
 
         if (!response) return res.status(400).send(response)
-        if (response) return res.status(200).send(response)
+        if (response)
+            return res
+                .status(200)
+                .send({ response, message: 'Player created.' })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -83,7 +76,10 @@ export async function addObjectToPlayerByParams(req, res) {
             return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: 'Now you own a new object.' })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -120,7 +116,10 @@ export async function addObjectToPlayer(req, res) {
             return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: 'Now you own a new object.' })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -137,7 +136,10 @@ export async function killPlayer(req, res) {
         )
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: `You killed ${response.name}` })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -152,7 +154,7 @@ export async function pickUpObjectWithoutOwener(req, res) {
         if (!objectResponse)
             return res.status(404).send({
                 response: objectResponse,
-                message: 'Now objects without owner right now.',
+                message: 'No objects without owner right now.',
             })
         const response = await PlayerRepo.findByIdAndUpdate(
             id,
@@ -169,7 +171,11 @@ export async function pickUpObjectWithoutOwener(req, res) {
             return res.status(404).send(ownerObjectResponse)
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response)
+            return res.status(202).send({
+                response,
+                message: `Now you own a ${objectResponse.name}`,
+            })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -177,6 +183,9 @@ export async function pickUpObjectWithoutOwener(req, res) {
 
 // 4. Implement attack player endpoint: one player attacks another player using
 // an object from its bag. Adjust health accordingly
+// &
+// 7. Implement use object endpoint: a player use an object against another
+// player or itself.
 export async function attackPlayer(req, res) {
     const { body } = req
 
@@ -190,16 +199,27 @@ export async function attackPlayer(req, res) {
         const victimResponse = await PlayerRepo.findById(body.victim)
         if (!victimResponse) return res.status(404).send(victimResponse)
 
+        const victimHealth = victimResponse.health + objectResponse.value
+
         const attackResponse = await PlayerRepo.findByIdAndUpdate(
             body.victim,
             {
-                health: victimResponse.health + objectResponse.value,
+                health: victimHealth >= 1 ? victimHealth : 0,
             },
             { new: true }
         )
 
+        const resultAttackMessage =
+            victimHealth >= 1
+                ? `Your attack was succesful, now ${attackResponse.name} has ${attackResponse.health} health points `
+                : `You killed ${attackResponse.name}`
+
         if (!attackResponse) return res.status(404).send(!attackResponse)
-        if (attackResponse) return res.status(200).send(attackResponse)
+        if (attackResponse)
+            return res.status(200).send({
+                attackResponse,
+                message: resultAttackMessage,
+            })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -242,4 +262,25 @@ export async function stealFromPlayer(req, res) {
     }
 }
 
+// 6. Implement resurrect player endpoint: bring back to life a dead player
+// using its id.
+export async function resurrectPlayer(req, res) {
+    const { id } = req.params
+    try {
+        const response = await PlayerRepo.findByIdAndUpdate(
+            id,
+            { health: 100 },
+            { new: true }
+        )
+
+        if (!response) return res.status(404).send(response)
+        if (response) return res.status(202).send({ response, message: `You resurrected ${response.name}` })
+    } catch ({ message }) {
+        res.status(500).send({ message })
+    }
+}
+
+// 8. Are you having fun? You are free to extend the game with new
+// functionality.
+// ...
 // export async function deletePlayer(req, res) {}
