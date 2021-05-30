@@ -37,7 +37,8 @@ UserSchema.pre('save', async function () {
     try {
         this.password = await bcrypt.hash(this.password, salt)
     } catch (error) {
-        response.json({ message: error })
+        // res.json({ message: error })
+        console.log( error)
     }
 })
 

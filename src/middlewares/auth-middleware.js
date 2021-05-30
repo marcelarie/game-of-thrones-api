@@ -5,7 +5,6 @@ async function authMiddleware(req, res, next) {
 
     if (authHeader) {
         const token = authHeader.substring(7)
-        console.log(token)
 
         jwt.verify(token, process.env.SECRET, (err, user) => {
             if (err) {

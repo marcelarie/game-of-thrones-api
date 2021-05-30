@@ -117,9 +117,10 @@ export async function addObjectToPlayer(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response)
-            return res
-                .status(200)
-                .send({ response, message: 'Now you own a new object.' })
+            return res.status(200).send({
+                response,
+                message: `Now ${response.name} owns a ${objectResponse.name}.`,
+            })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -174,7 +175,7 @@ export async function pickUpObjectWithoutOwener(req, res) {
         if (response)
             return res.status(202).send({
                 response,
-                message: `Now you own a ${objectResponse.name}`,
+                message: `Now ${response.name} owns a ${objectResponse.name}`,
             })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -212,8 +213,8 @@ export async function attackPlayer(req, res) {
 
         const resultAttackMessage =
             victimHealth >= 1
-                ? `Your attack was succesful, now ${attackResponse.name} has ${attackResponse.health} health points `
-                : `You killed ${attackResponse.name}`
+                ? `${foundAttacker.name} attack was succesful, now ${attackResponse.name} has ${attackResponse.health} health points `
+                : `${foundAttacker.name} killed ${attackResponse.name}`
 
         if (attackResponse)
             return res.status(200).send({
@@ -239,12 +240,12 @@ export async function stealFromPlayer(req, res) {
 
         const foundThief = await PlayerRepo.findByIdAndUpdate(id, {
             $push: { bag: { $each: foundVictim.bag } },
-        })
+        }).populate('bag')
         if (!foundThief) return res.status(404).send(!foundThief)
 
         const stealResponse = await PlayerRepo.findByIdAndUpdate(victim, {
             bag: [],
-        }).populate('bag')
+        })
         if (!stealResponse) return res.status(404).send(!stealResponse)
 
         const changeOwnership = await ObjectRepo.updateMany(
@@ -254,8 +255,8 @@ export async function stealFromPlayer(req, res) {
         if (!changeOwnership) return res.status(404).send(!changeOwnership)
 
         return res.status(200).send({
-            response: { stolenItems: stealResponse.bag },
-            message: `You stole the bag of ${stealResponse.name} `,
+            response: { 'stolen-items': foundThief.bag },
+            message: `${foundThief.name} stole the bag of ${stealResponse.name} `,
         })
     } catch ({ message }) {
         res.status(500).send({ message })

@@ -17,7 +17,8 @@ export async function login(req, res) {
     const { body } = req
     try {
         const user = await UserRepo.findOne({ username: body.username })
-        const passwordCheck = await bcrypt.compare(body.password, user.password)
+
+        const passwordCheck = bcrypt.compare(body.password, user.password)
 
         if (!passwordCheck)
             res.status(401).send({

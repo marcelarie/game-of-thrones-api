@@ -355,14 +355,15 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/player/resurrect/1",
+					"raw": "localhost:8080/player/2/steal/1",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"player",
-						"resurrect",
+						"2",
+						"steal",
 						"1"
 					]
 				}
@@ -431,6 +432,36 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYjNkNzIzMmIwNjY2Mzg0YTIwZWQ3NiIsImlhdCI6MTYyMjM5OTI4NSwiZXhwIjoxNjIyNDg1Njg1fQ.I9nldX_pjgvdGHFVC4xGGiVEGUG085fmNlZTrmwVfu8",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

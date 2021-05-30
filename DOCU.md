@@ -1,0 +1,388 @@
+## Documentation
+
+The Game of Thrones API allows developers to access and manage information about
+the Seven Kingdoms.
+
+### Start here
+
+### Endpoints
+
+**HOST** `http://localhost:8080/`
+
+1.1 **User sign up**
+
+`POST` to `http://localhost:8080/user/sign-up`
+
+```json
+// sign up request body
+{
+    "username": "aria",
+    "email": "aria@mail.com",
+    "password": "pass12345"
+}
+```
+
+**Correct response with status code `201`:**
+
+```json
+// sign up response body
+{
+    "username": "aria",
+    "email": "aria@mail.com",
+    "password": "$2b$10$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa"
+}
+```
+
+1.2 **User login**
+
+`POST` to `http://localhost:8080/user/login`
+
+```json
+// login request body
+{
+    "username": "aria",
+    "password": "pass12345"
+}
+```
+
+**Correct response with status code `200`:**
+
+```json
+// login response body
+{
+    "message": "Logged In"
+}
+```
+
+with a cookie token
+
+```
+eyJhbGcisOiJIUzI1NiIsInR5cCI6IkpXVC...
+```
+
+2.1 **Get all players**
+
+`GET` to `http://localhost:8080/player/all`
+
+**Correct response with status code `200`:**
+
+```json
+// get all players response body
+[
+    {
+        "health": 100,
+        "bag": [1],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    }
+]
+```
+
+2.2 **Get player by ID**
+
+`GET` to `http://localhost:8080/player/:id`
+
+**Correct response with status code `200`:**
+
+```json
+// get all players response body
+[
+    {
+        "health": 100,
+        "bag": [1],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    }
+]
+```
+
+2.3 **Create player**
+
+`POST` to `http://localhost:8080/player`
+
+```json
+// create player request body
+{
+    "name": "Jon Snow",
+    "age": 23
+}
+```
+
+**Correct response with status code `200`:**
+
+```json
+// get all players response body
+[
+    {
+        "health": 100,
+        "bag": [1],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    }
+]
+```
+
+2.3 **Create player**
+
+`POST` to `http://localhost:8080/player`
+
+```json
+// create player request body
+{
+    "name": "Jon Snow",
+    "age": 23
+}
+```
+
+**Correct response:**
+
+```json
+// get all players response body
+{
+    "response": {
+        "health": 100,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "Player created"
+}
+```
+
+2.4 **Add object to player**
+
+`PATCH` to `http://localhost:8080/player/add-object`
+
+This endpoint needs a request body with the `_id` of the player we want to give
+the object, and any key to identify the object we want. Examples: `name`, `_id`,
+`aviable: true`, etc
+
+```json
+// add object to player request body
+{
+    "_id": 1,
+    "name": "Knife"
+}
+```
+
+**Correct response:**
+
+```json
+// create player request body
+{
+    "response": {
+        "health": 100,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "Now Jon Snow own a Knife"
+}
+```
+
+```json
+// get all players response body
+{
+    "response": {
+        "health": 100,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "Player created"
+}
+```
+
+2.4 **Add object to player**
+
+`PATCH` to `http://localhost:8080/player/add-object`
+
+or
+
+`PATCH` to `http://localhost:8080/player/add-object/:objectId/to/:id`
+
+The first endpoint needs a request body with the `_id` of the player we want to give
+the object, and any key to identify the object we want. Examples: `name`, `_id`,
+`aviable: true`, etc...
+
+The second one uses the url parameters. `:id` has to be a player id and
+`:objectId` a object id.
+
+```json
+// add object to player request body
+{
+    "_id": 1,
+    "name": "Knife"
+}
+```
+
+**Correct response with status code `200`:**
+
+```json
+// add object to player response body
+{
+    "response": {
+        "health": 100,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "Now Jon Snow own a Knife"
+}
+```
+
+2.4 **Kill player**
+
+`PATCH` to `http://localhost:8080/player/kill/:id`
+
+Response will return the player with `health` with `0` points and a cool message.
+
+**Correct response with status code `200`:**
+
+```json
+// kill player response body
+{
+    "response": {
+        "health": 0,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "You killed Jon Snow"
+}
+```
+
+2.5 **Pick up object without owner**
+
+`PATCH` to `http://localhost:8080/player/pick-up-object/:id`
+
+This endpoint will give a object without owner, for example a Knife, to the given
+`:id`. The endpoint will give the ownership of that object to the player.
+
+**Correct response with status code `202`:**
+
+```json
+// pick up object with no owner response body
+{
+    "response": {
+        "health": 0,
+        "bag": [1],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "Now Jon Snow owns a Knife"
+}
+```
+
+2.6 **Attack player**
+
+`PATCH` to `http://localhost:8080/player/attack`
+
+The attack endpoint needs the `_id` of the attacker, the id of the object as
+`object` and the id of the victim as `victim`. Te victim will recive te value
+of the object on his health, if the object has a negative value, for example `-20`,
+the player will have 20 points less of health.
+
+The endpoint can have two different messages. One if the player still haves health
+points `Jon Snow attack was succesful, now Aria has health points`, or the second
+that appears when the victim gets killed, `Jon Snow killed Aria`.
+
+```json
+// attack player request body
+{
+    "_id": 1,
+    "object": 2,
+    "victim": 3
+}
+```
+
+**Correct response with status code `200`:**
+
+```json
+// attack player response body
+{
+    "response": {
+        "health": 0,
+        "bag": [2, 3],
+        "_id": 3,
+        "name": "Aria",
+        "age": 18,
+        "__v": 0
+    },
+    "message": "Jon Snow killed Aria"
+}
+```
+
+2.7 **Steal from player**
+
+`PATCH` to `http://localhost:8080/player/:id/steal/:victim`
+
+This endpoint will give the objects that are inside the victim on the owner bag.
+The `id` parameter its the thief id and the `victim` parameter its the victim id.
+
+The endpoint will change the ownership of all the objects to the thief.
+
+If the victim does not have any objects in the bag the response will be a `404`
+with a message, `The victim doesn't have items.`
+
+**Correct response with status code `200`:**
+
+```json
+// steal from player response body
+{
+    "response": {
+        "stolen-items": [
+            {
+                "available": true,
+                "owner": 1,
+                "_id": 1,
+                "name": "Knife",
+                "value": -20,
+                "__v": 0
+            }
+        ]
+    },
+    "message": "Jon Snow stole the bag of Aria"
+}
+```
+
+2.8 **Resurrect player**
+
+`PATCH` to `http://localhost:8080/player/resurrect/:id`
+
+The response will return the player with `health` with `100` points and a cool message.
+
+**Correct response with status code `202`:**
+
+```json
+// kill player response body
+{
+    "response": {
+        "health": 100,
+        "bag": [],
+        "_id": 1,
+        "name": "Jon Snow",
+        "age": 23,
+        "__v": 0
+    },
+    "message": "You resurrected Jon Snow"
+}
+```
