@@ -5,6 +5,13 @@ the Seven Kingdoms.
 
 ### Start here
 
+If you want to use the authentication of the API first you will need the use
+the sign-up and login [endpoints](#endpoints). The login endpoint will return
+a token that can be used to use the other endpoints.
+
+If you want to disable the authentication middleware just go to the line [18](https://github.com/marcelarie/game-of-thrones-api/blob/main/src/server.js#L18) of
+the `src/server.js` file and comment it.
+
 ### Endpoints
 
 **HOST** `http://localhost:8080/`
