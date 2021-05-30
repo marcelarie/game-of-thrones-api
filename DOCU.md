@@ -115,83 +115,7 @@ eyJhbGcisOiJIUzI1NiIsInR5cCI6IkpXVC...
 **Correct response with status code `200`:**
 
 ```json
-// get all players response body
-[
-    {
-        "health": 100,
-        "bag": [1],
-        "_id": 1,
-        "name": "Jon Snow",
-        "age": 23,
-        "__v": 0
-    }
-]
-```
-
-2.3 **Create player**
-
-`POST` to `http://localhost:8080/player`
-
-```json
-// create player request body
-{
-    "name": "Jon Snow",
-    "age": 23
-}
-```
-
-**Correct response:**
-
-```json
-// get all players response body
-{
-    "response": {
-        "health": 100,
-        "bag": [],
-        "_id": 1,
-        "name": "Jon Snow",
-        "age": 23,
-        "__v": 0
-    },
-    "message": "Player created"
-}
-```
-
-2.4 **Add object to player**
-
-`PATCH` to `http://localhost:8080/player/add-object`
-
-This endpoint needs a request body with the `_id` of the player we want to give
-the object, and any key to identify the object we want. Examples: `name`, `_id`,
-`aviable: true`, etc
-
-```json
-// add object to player request body
-{
-    "_id": 1,
-    "name": "Knife"
-}
-```
-
-**Correct response:**
-
-```json
-// create player request body
-{
-    "response": {
-        "health": 100,
-        "bag": [],
-        "_id": 1,
-        "name": "Jon Snow",
-        "age": 23,
-        "__v": 0
-    },
-    "message": "Now Jon Snow own a Knife"
-}
-```
-
-```json
-// get all players response body
+// create player response body
 {
     "response": {
         "health": 100,
@@ -220,6 +144,9 @@ the object, and any key to identify the object we want. Examples: `name`, `_id`,
 The second one uses the url parameters. `:id` has to be a player id and
 `:objectId` a object id.
 
+If the object is not available the endpoint will return a `404` with a message
+`Knife is not available`.
+
 ```json
 // add object to player request body
 {
@@ -241,11 +168,11 @@ The second one uses the url parameters. `:id` has to be a player id and
         "age": 23,
         "__v": 0
     },
-    "message": "Now Jon Snow own a Knife"
+    "message": "Now Jon Snow owns a Knife"
 }
 ```
 
-2.4 **Kill player**
+2.5 **Kill player**
 
 `PATCH` to `http://localhost:8080/player/kill/:id`
 

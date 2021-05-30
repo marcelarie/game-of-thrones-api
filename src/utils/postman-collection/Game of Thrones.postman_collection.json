@@ -282,6 +282,26 @@
 			"response": []
 		},
 		{
+			"name": "Repair object",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/object/destroy/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"object",
+						"destroy",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Object",
 			"request": {
 				"method": "DELETE",

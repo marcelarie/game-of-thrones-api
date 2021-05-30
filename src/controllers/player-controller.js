@@ -48,11 +48,14 @@ export async function getPlayerById(req, res) {
 export async function addObjectToPlayerByParams(req, res) {
     const { id, objectId } = req.params
 
-    // TODO: return if object isn't available
-
     try {
         const objectResponse = await ObjectRepo.findById(objectId)
 
+        if (!objectResponse.available)
+            return res.status(404).send({
+                objectResponse,
+                message: `${objectResponse.name} is not available`,
+            })
         if (!objectResponse) return res.status(404).send(objectResponse)
         if (objectResponse.owner)
             return res.status(409).send({
@@ -91,12 +94,16 @@ export async function addObjectToPlayerByParams(req, res) {
 export async function addObjectToPlayer(req, res) {
     const { body } = req
 
-    // TODO: check this endpoint
     const { _id, ...rest } = body
 
     try {
         const objectResponse = await ObjectRepo.findOne(rest)
 
+        if (!objectResponse.available)
+            return res.status(404).send({
+                objectResponse,
+                message: `${objectResponse.name} is not available`,
+            })
         if (!objectResponse) return res.status(404).send(objectResponse)
         if (objectResponse.owner)
             return res.status(409).send({
