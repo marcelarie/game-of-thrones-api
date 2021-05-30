@@ -5,10 +5,10 @@ const ObjectRouter = Router()
 
 ObjectRouter.post('', ObjectMethods.postObject)
 ObjectRouter.get('/:id', ObjectMethods.getObjectById)
-ObjectRouter.put('/value-random/:id', ObjectMethods.updateObjectValueRandom)
-ObjectRouter.put('/value/:value/to/:id', ObjectMethods.updateObjectByGivenValue)
-ObjectRouter.put('/destroy/:id', ObjectMethods.destroyObject)
-ObjectRouter.put('/repair/:id', ObjectMethods.repairObject)
+ObjectRouter.patch('/value-random/:id', ObjectMethods.updateObjectValueRandom)
+ObjectRouter.patch('/value/:value/to/:id', ObjectMethods.updateObjectByGivenValue)
+ObjectRouter.patch('/destroy/:id', ObjectMethods.destroyObject)
+ObjectRouter.patch('/repair/:id', ObjectMethods.repairObject)
 ObjectRouter.delete('/:id', ObjectMethods.deleteObject)
 
 export default ObjectRouter

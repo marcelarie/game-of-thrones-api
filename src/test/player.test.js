@@ -39,7 +39,7 @@ test('should return the posted player', async () => {
 
 // Kill a player: sets player health to 0.
 test('should return the choosen player with health 0', async () => {
-    const response = await api.put('/player/kill/1')
+    const response = await api.patch('/player/kill/1')
     expect(response.status).toBe(200)
     expect(typeof response.body).toBe('object')
     expect(response.body.response.health).toBe(0)

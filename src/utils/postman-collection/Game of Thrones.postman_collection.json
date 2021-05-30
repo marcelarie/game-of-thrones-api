@@ -112,7 +112,7 @@
 		{
 			"name": "Add object to player bag by params",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/player/add-object/4/to/1",
@@ -163,7 +163,7 @@
 		{
 			"name": "Kill player",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/player/kill/2",
@@ -183,7 +183,7 @@
 		{
 			"name": "Resurrect Player",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/player/resurrect/1",
@@ -222,7 +222,7 @@
 		{
 			"name": "Update object value random",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/object/value-random/1",
@@ -242,7 +242,7 @@
 		{
 			"name": "Update object value",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/object/value/-14/to/1",
@@ -264,7 +264,7 @@
 		{
 			"name": "Destroy object",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/object/destroy/2",
@@ -303,7 +303,7 @@
 		{
 			"name": "Pick up object without owner",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/player/pick-up-object/1",
@@ -352,7 +352,7 @@
 		{
 			"name": "Steal bag from owner",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "localhost:8080/player/resurrect/1",
