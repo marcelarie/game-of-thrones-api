@@ -1,7 +1,10 @@
-import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import mongoose from 'mongoose'
 
 const { Schema, model } = mongoose
+
+const regexEmail = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+const validateEmail = email => regexEmail.test(email)
 
 const UserSchema = Schema({
     username: {
@@ -14,6 +17,8 @@ const UserSchema = Schema({
         required: true,
         unique: true,
         lowercase: true,
+        trim: true,
+        validate: [validateEmail, 'Please fill a valid email address'],
     },
     password: {
         type: String,

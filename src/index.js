@@ -16,12 +16,12 @@ mongoose.connect(
         useFindAndModify: false,
         useCreateIndex: true,
     },
-    () => {
-        console.log('Connected to Database')
-    }
+    () => console.log('Connected to Database')
 )
+
 mongoose.set('returnOriginal', false)
 
 export { app }
+
 if (NODE_ENV !== 'test')
     app.listen(PORT, () => console.log(`Server running on port ${PORT} :)`))
