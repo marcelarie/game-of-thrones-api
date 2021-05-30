@@ -77,12 +77,10 @@ export async function updateObjectByGivenValue(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response)
-            return res
-                .status(200)
-                .send({
-                    response,
-                    message: `Now ${response.name} has a value of ${response.value}`,
-                })
+            return res.status(200).send({
+                response,
+                message: `Now ${response.name} has a value of ${response.value}`,
+            })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -96,9 +94,11 @@ export async function destroyObject(req, res) {
             id,
             {
                 available: false,
+                owner: null,
             },
             { new: true }
         )
+        // TODO: Extract object from owner bag with the response owner id
         if (!response)
             return res
                 .status(404)
@@ -136,6 +136,7 @@ export async function deleteObject(req, res) {
     try {
         const response = await ObjectRepo.findByIdAndRemove(id)
         if (!response) return res.status(404).send(response)
+        console.log( response)
         if (response)
             return res
                 .status(200)

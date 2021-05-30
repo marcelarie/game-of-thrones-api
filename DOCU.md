@@ -386,3 +386,166 @@ The response will return the player with `health` with `100` points and a cool m
     "message": "You resurrected Jon Snow"
 }
 ```
+
+3.1 **Create object**
+
+`POST` to `http://localhost:8080/object`
+
+If no value is given when creating an object, a random value between `200` and
+`-200` will be given. The name of the object must be unique.
+
+```json
+// create object request body
+{
+    "name": "Kife",
+    "value": -20
+}
+```
+
+**Correct response with status code `200`:**
+
+```json
+// create object response body
+{
+    "available": true,
+    "owner": null,
+    "name": "Kife",
+    "value": -20,
+    "_id": 2,
+    "__v": 0
+}
+```
+
+3.2 **Search for an object by ID**
+
+`GET` to `http://localhost:8080/object/:id`
+
+**Correct response with status code `200`:**
+
+```json
+// get object by id response body
+{
+    "available": true,
+    "owner": null,
+    "name": "Kife",
+    "value": -20,
+    "_id": 1,
+    "__v": 0
+}
+```
+
+3.3 **Give object a random value**
+
+`PATCH` to `http://localhost:8080/object/value-random/:id`
+
+This endpoint will give the given object a random value between `200` and `-200`.
+
+**Correct response with status code `200`:**
+
+```json
+// get object by id response body
+{
+    "response": {
+        "available": true,
+        "owner": null,
+        "name": "Kife",
+        "value": 185,
+        "_id": 1,
+        "__v": 0
+    },
+    "message": "Now Knife has a value of 185"
+}
+```
+
+3.3 **Update object with given value**
+
+`PATCH` to `http://localhost:8080/object/value/:value/to/:id`
+
+This endpoint will give the given object `id` the given `value`.
+
+**Correct response with status code `200`:**
+
+```json
+// get object by id response body
+{
+    "response": {
+        "available": true,
+        "owner": null,
+        "name": "Kife",
+        "value": 15,
+        "_id": 1,
+        "__v": 0
+    },
+    "message": "Now Knife has a value of 15"
+}
+```
+
+3.3 **Destroy object**
+
+`PATCH` to `http://localhost:8080/object/destroy/:id`
+
+This endpoint will change the given object aviability to `false`. Destroyed
+objects have no owner, so the player that owned that object losts it.
+
+**Correct response with status code `200`:**
+
+```json
+// destroy object response body
+{
+    "response": {
+        "available": false,
+        "owner": null,
+        "name": "Kife",
+        "value": 15,
+        "_id": 1,
+        "__v": 0
+    },
+    "message": "The obect was destroyed."
+}
+```
+
+3.3 **Repair object**
+
+`PATCH` to `http://localhost:8080/object/repair/:id`
+
+This endpoint will change the given object aviability to `true`.
+
+**Correct response with status code `200`:**
+
+```json
+// repair object response body
+{
+    "response": {
+        "available": true,
+        "owner": null,
+        "name": "Kife",
+        "value": 15,
+        "_id": 1,
+        "__v": 0
+    },
+    "message": "The obect was repaired."
+}
+```
+
+3.4 **Delete object**
+
+`DELETE` to `http://localhost:8080/object/delete/:id`
+
+This endpoint will delete the object from the database.
+
+**Correct response with status code `200`:**
+
+```json
+// repair object response body
+{
+    "response": {
+        "value": -20,
+        "available": false,
+        "owner": 1,
+        "_id": 1,
+        "name": "Knife",
+        "__v": 0
+    },
+    "message": "The object was removed."
+}
+```

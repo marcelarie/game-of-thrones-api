@@ -15,7 +15,7 @@ const ObjectSchema = Schema({
     },
     value: {
         type: Number,
-        required: true,
+        default: Math.floor(Math.random() * (200 - -200) + -200),
         max: 200,
         min: -200,
     },

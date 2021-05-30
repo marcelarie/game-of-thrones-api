@@ -48,6 +48,8 @@ export async function getPlayerById(req, res) {
 export async function addObjectToPlayerByParams(req, res) {
     const { id, objectId } = req.params
 
+    // TODO: return if object isn't available
+
     try {
         const objectResponse = await ObjectRepo.findById(objectId)
 
@@ -89,6 +91,7 @@ export async function addObjectToPlayerByParams(req, res) {
 export async function addObjectToPlayer(req, res) {
     const { body } = req
 
+    // TODO: check this endpoint
     const { _id, ...rest } = body
 
     try {
