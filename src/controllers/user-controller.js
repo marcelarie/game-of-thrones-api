@@ -6,8 +6,8 @@ export async function singUp(req, res) {
     const { body } = req
     try {
         const response = await UserRepo.create(body)
-        if (!response) res.status(400).json(response)
-        if (response) res.status(200).json(response)
+        if (!response) res.status(400).send(response)
+        if (response) res.status(201).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }

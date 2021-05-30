@@ -1,4 +1,5 @@
 import supertest from 'supertest'
+import mongoose from 'mongoose'
 
 import { app } from '../index.js'
 import { ObjectModel } from '../models/index.js'
@@ -14,7 +15,7 @@ beforeEach(async () => {
 // Test a get request
 test('should return the found object by id as json', async () => {
     const response = await api.get('/object/1')
-    expect(response.status).toBe(202)
+    expect(response.status).toBe(200)
     expect(typeof response.body).toBe('object')
 })
 
