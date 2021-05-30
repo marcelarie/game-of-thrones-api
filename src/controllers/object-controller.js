@@ -18,7 +18,7 @@ export async function postObject(req, res) {
     try {
         const response = await ObjectRepo.create(body)
 
-        if (!response) return res.status(400).send(response)
+        if (!response) return res.status(404).send(response)
         if (response) return res.status(200).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -31,7 +31,7 @@ export async function getObjectById(req, res) {
         const response = await ObjectRepo.findById(id)
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send(response)
+        if (response) return res.status(200).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -51,12 +51,10 @@ export async function updateObjectValueRandom(req, res) {
 
         if (!response) return res.status(404).send(response)
         if (response)
-            return res
-                .status(202)
-                .send({
-                    response,
-                    message: `Now ${response.name} has a value of ${response.value}`,
-                })
+            return res.status(200).send({
+                response,
+                message: `Now ${response.name} has a value of ${response.value}`,
+            })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -78,9 +76,13 @@ export async function updateObjectByGivenValue(req, res) {
         )
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send({ response, 
+        if (response)
+            return res
+                .status(200)
+                .send({
+                    response,
                     message: `Now ${response.name} has a value of ${response.value}`,
-        })
+                })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -101,7 +103,7 @@ export async function destroyObject(req, res) {
             return res
                 .status(404)
                 .send({ response, message: 'The object was destroyed.' })
-        if (response) return res.status(202).send(response)
+        if (response) return res.status(200).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -121,7 +123,7 @@ export async function repairObject(req, res) {
         if (!response) return res.status(404).send(response)
         if (response)
             return res
-                .status(202)
+                .status(200)
                 .send({ response, message: 'The object was repaired.' })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -136,7 +138,7 @@ export async function deleteObject(req, res) {
         if (!response) return res.status(404).send(response)
         if (response)
             return res
-                .status(202)
+                .status(200)
                 .send({ response, message: 'The object was removed.' })
     } catch ({ message }) {
         res.status(500).send({ message })

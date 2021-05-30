@@ -24,7 +24,7 @@ export async function postPlayer(req, res) {
         if (!response) return res.status(400).send(response)
         if (response)
             return res
-                .status(200)
+                .status(201)
                 .send({ response, message: 'Player created.' })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -78,7 +78,7 @@ export async function addObjectToPlayerByParams(req, res) {
         if (!response) return res.status(404).send(response)
         if (response)
             return res
-                .status(202)
+                .status(200)
                 .send({ response, message: 'Now you own a new object.' })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -118,7 +118,7 @@ export async function addObjectToPlayer(req, res) {
         if (!response) return res.status(404).send(response)
         if (response)
             return res
-                .status(202)
+                .status(200)
                 .send({ response, message: 'Now you own a new object.' })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -138,7 +138,7 @@ export async function killPlayer(req, res) {
         if (!response) return res.status(404).send(response)
         if (response)
             return res
-                .status(202)
+                .status(200)
                 .send({ response, message: `You killed ${response.name}` })
     } catch ({ message }) {
         res.status(500).send({ message })
@@ -208,13 +208,13 @@ export async function attackPlayer(req, res) {
             },
             { new: true }
         )
+        if (!attackResponse) return res.status(404).send(!attackResponse)
 
         const resultAttackMessage =
             victimHealth >= 1
                 ? `Your attack was succesful, now ${attackResponse.name} has ${attackResponse.health} health points `
                 : `You killed ${attackResponse.name}`
 
-        if (!attackResponse) return res.status(404).send(!attackResponse)
         if (attackResponse)
             return res.status(200).send({
                 attackResponse,
@@ -235,7 +235,7 @@ export async function stealFromPlayer(req, res) {
         if (foundVictim.bag.length <= 0)
             return res
                 .status(404)
-                .send({ message: 'The victim dosnt have items.' })
+                .send({ message: "The victim doesn't have items." })
 
         const foundThief = await PlayerRepo.findByIdAndUpdate(id, {
             $push: { bag: { $each: foundVictim.bag } },
@@ -274,7 +274,10 @@ export async function resurrectPlayer(req, res) {
         )
 
         if (!response) return res.status(404).send(response)
-        if (response) return res.status(202).send({ response, message: `You resurrected ${response.name}` })
+        if (response)
+            return res
+                .status(202)
+                .send({ response, message: `You resurrected ${response.name}` })
     } catch ({ message }) {
         res.status(500).send({ message })
     }
