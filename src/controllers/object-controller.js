@@ -1,4 +1,5 @@
 import ObjectRepo from '../models/Object-model.js'
+import PlayerRepo from '../models/Player-model.js'
 
 // ENDPOINTS
 // OBJECT:
@@ -98,12 +99,15 @@ export async function destroyObject(req, res) {
             },
             { new: true }
         )
-        // TODO: Extract object from owner bag with the response owner id
-        if (!response)
+        const ownerResponse = await PlayerRepo.findByIdAndUpdate(response._id, {
+            $pull: { bag: id },
+        })
+        if (!ownerResponse) return res.status(404).send(ownerResponse)
+        if (!response) return res.status(200).send(response)
+        if (response)
             return res
                 .status(404)
                 .send({ response, message: 'The object was destroyed.' })
-        if (response) return res.status(200).send(response)
     } catch ({ message }) {
         res.status(500).send({ message })
     }
@@ -136,7 +140,7 @@ export async function deleteObject(req, res) {
     try {
         const response = await ObjectRepo.findByIdAndRemove(id)
         if (!response) return res.status(404).send(response)
-        console.log( response)
+        console.log(response)
         if (response)
             return res
                 .status(200)
