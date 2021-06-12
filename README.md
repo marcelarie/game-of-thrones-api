@@ -1,8 +1,8 @@
-# Game of Thrones REST API implementation
+# Game of Thrones REST API
 
-<center>
+<p align="center">
 <img src="./img/logo.png" alt="api-logo" width='300px'/>
-</center>
+</p>
 
 The **Game of Thrones API** allows developers to access and manage information about
 the Seven Kingdoms. This is a challenge from the
@@ -34,3 +34,4 @@ A local server will start on port 8080.
 > http://localhost:8080
 
 Enjoy!
+
